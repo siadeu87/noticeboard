@@ -7,12 +7,15 @@ import com.example.noticeboard.domain.user.dto.UserResponse
 import com.example.noticeboard.domain.user.model.User
 import com.example.noticeboard.domain.user.repository.UserRepository
 import com.example.noticeboard.infra.security.jwt.JwtPlugin
+import org.springframework.security.crypto.password.PasswordEncoder
+
 import org.springframework.stereotype.Service
 
 @Service
 class UserServiceImpl(
     private val userRepository: UserRepository,
-    private val jwtPlugin: JwtPlugin
+    private val jwtPlugin: JwtPlugin,
+    private val passwordEncoder: PasswordEncoder
 ): UserService {
     override fun signup(request: SignupRequest): UserResponse {
         if(userRepository.existsByUsername(request.username)){
@@ -23,7 +26,7 @@ class UserServiceImpl(
             userRepository.save(
                 User(
                     username = request.username,
-                    password = request.password,
+                    password = passwordEncoder.encode(request.password),
                 )
             )
         } else {
@@ -36,7 +39,7 @@ class UserServiceImpl(
     override fun login(request: LoginRequest): LoginResponse {
         val user = userRepository.findByUsername(request.username) ?: throw Exception("Username or Password not found")
 
-        if(user.password != request.password){
+        if(!passwordEncoder.matches(request.password, user.password)){
             throw Exception("Username or Password not found")
         }
         val login = LoginResponse(
