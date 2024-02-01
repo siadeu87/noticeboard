@@ -1,5 +1,6 @@
 package com.example.noticeboard.domain.user.model
 
+import com.example.noticeboard.domain.shared.model.BaseEntity
 import jakarta.persistence.*
 
 @Entity
@@ -7,7 +8,7 @@ import jakarta.persistence.*
 class User (
     val username: String,
     var password: String,
-){
+): BaseEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
