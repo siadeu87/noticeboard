@@ -6,11 +6,13 @@ import com.example.noticeboard.domain.user.dto.SignupRequest
 import com.example.noticeboard.domain.user.dto.UserResponse
 import com.example.noticeboard.domain.user.model.User
 import com.example.noticeboard.domain.user.repository.UserRepository
+import com.example.noticeboard.infra.security.jwt.JwtPlugin
 import org.springframework.stereotype.Service
 
 @Service
 class UserServiceImpl(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val jwtPlugin: JwtPlugin
 ): UserService {
     override fun signup(request: SignupRequest): UserResponse {
         if(userRepository.existsByUsername(request.username)){
@@ -37,6 +39,12 @@ class UserServiceImpl(
         if(user.password != request.password){
             throw Exception("Username or Password not found")
         }
-        TODO("토큰생성")
+        val login = LoginResponse(
+            accessToken = jwtPlugin.generateAccessToken(
+                subject = user.id.toString(),
+                username = user.username
+            )
+        )
+        return login
     }
 }
