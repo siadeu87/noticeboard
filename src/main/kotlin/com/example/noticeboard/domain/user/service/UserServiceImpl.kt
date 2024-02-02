@@ -1,5 +1,6 @@
 package com.example.noticeboard.domain.user.service
 
+import com.example.noticeboard.domain.exception.InvalidCredentialException
 import com.example.noticeboard.domain.user.dto.LoginRequest
 import com.example.noticeboard.domain.user.dto.LoginResponse
 import com.example.noticeboard.domain.user.dto.SignupRequest
@@ -19,7 +20,7 @@ class UserServiceImpl(
 ): UserService {
     override fun signup(request: SignupRequest): UserResponse {
         if(userRepository.existsByUsername(request.username)){
-            throw Exception("Username is already in use")
+            throw IllegalStateException("Username is already in use")
         }
 
         val result = if(request.password == request.checkPassword){
@@ -37,10 +38,10 @@ class UserServiceImpl(
     }
 
     override fun login(request: LoginRequest): LoginResponse {
-        val user = userRepository.findByUsername(request.username) ?: throw Exception("Username or Password not found")
+        val user = userRepository.findByUsername(request.username) ?: throw InvalidCredentialException("Username or Password not found")
 
         if(!passwordEncoder.matches(request.password, user.password)){
-            throw Exception("Username or Password not found")
+            throw InvalidCredentialException("Username or Password not found")
         }
         val login = LoginResponse(
             accessToken = jwtPlugin.generateAccessToken(
