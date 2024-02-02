@@ -12,7 +12,8 @@ data class BoardResponse(
     val category: Category,
     val content: String,
     val createdAt: LocalDateTime,
-    val lastModifiedAt: LocalDateTime
+    val lastModifiedAt: LocalDateTime,
+    val heart: Int
 ){
     companion object{
         fun to(board: Board): BoardResponse{
@@ -24,7 +25,8 @@ data class BoardResponse(
                 category = board.category,
                 content = board.content,
                 createdAt = board.createdAt,
-                lastModifiedAt = board.lastModifiedAt
+                lastModifiedAt = board.lastModifiedAt,
+                heart = board.countHeart
             )
         }
     }

@@ -19,6 +19,8 @@ class Board(
 
     var deletedAt: LocalDateTime? = null
 
+    var countHeart = 0
+
     fun updateBoard(title: String, category: Category, tag: String, content: String){
         this.title = title
         this.category = category
