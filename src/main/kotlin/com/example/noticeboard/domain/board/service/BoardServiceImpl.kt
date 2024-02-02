@@ -4,6 +4,7 @@ import com.example.noticeboard.domain.board.dto.BoardResponse
 import com.example.noticeboard.domain.board.dto.CreatedBoardRequest
 import com.example.noticeboard.domain.board.model.Board
 import com.example.noticeboard.domain.board.repository.BoardRepository
+import com.example.noticeboard.domain.exception.ModelNotFoundException
 import com.example.noticeboard.domain.user.repository.UserRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -13,8 +14,17 @@ class BoardServiceImpl(
     private val boardRepository: BoardRepository,
     private val userRepository: UserRepository
 ): BoardService {
+    override fun getBoardList(): List<BoardResponse> {
+        return boardRepository.findAll().map { BoardResponse.to(it) }
+    }
+
+    override fun getBoard(boardId: Long): BoardResponse {
+        val board = boardRepository.findByIdOrNull(boardId) ?: throw ModelNotFoundException("Board", boardId)
+        return BoardResponse.to(board)
+    }
+
     override fun createdBoard(userId: Long, request: CreatedBoardRequest): BoardResponse {
-        val user = userRepository.findByIdOrNull(userId) ?: throw Exception("User not found")
+        val user = userRepository.findByIdOrNull(userId) ?: throw ModelNotFoundException("User", userId)
         val board = Board(
             user = user,
             username = user.username,
