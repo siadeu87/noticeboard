@@ -16,5 +16,4 @@ class BaseEntity {
 
     @LastModifiedDate
     var lastModifiedAt: LocalDateTime = LocalDateTime.now()
-        protected set
 }

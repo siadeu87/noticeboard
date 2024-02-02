@@ -4,4 +4,6 @@ import com.example.noticeboard.domain.board.model.Board
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface BoardRepository: JpaRepository<Board, Long> {
+    fun findByIdAndDeletedAtIsNull(boardId: Long): Board?
+    fun findAllByDeletedAtIsNull(): List<Board>
 }

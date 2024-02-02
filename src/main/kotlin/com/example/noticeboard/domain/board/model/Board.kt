@@ -8,10 +8,10 @@ import java.time.LocalDateTime
 @Entity
 class Board(
     @ManyToOne @JoinColumn(name = "user_id") val user: User,
-    val title: String,
-    val tag: String,
+    var title: String,
+    var tag: String,
     val username: String,
-    val content: String,
+    var content: String,
     @Enumerated(EnumType.STRING) var category: Category,
 ): BaseEntity() {
     @Id
@@ -19,4 +19,11 @@ class Board(
     var id: Long? = null
 
     var deletedAt: LocalDateTime? = null
+
+    fun updateBoard(title: String, category: Category, tag: String, content: String){
+        this.title = title
+        this.category = category
+        this.tag = tag
+        this.content = content
+    }
 }
