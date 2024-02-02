@@ -31,7 +31,6 @@ class BoardServiceImpl(
         val user = userRepository.findByIdOrNull(userId) ?: throw ModelNotFoundException("User", userId)
         val board = Board(
             user = user,
-            username = user.username,
             title = request.title,
             category = request.category,
             tag = request.tag,

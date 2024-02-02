@@ -10,7 +10,6 @@ class Board(
     @ManyToOne @JoinColumn(name = "user_id") val user: User,
     var title: String,
     var tag: String,
-    val username: String,
     var content: String,
     @Enumerated(EnumType.STRING) var category: Category,
 ): BaseEntity() {
