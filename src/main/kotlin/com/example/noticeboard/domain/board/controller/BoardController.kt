@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.*
 class BoardController(
     private val boardService: BoardService
 ) {
+    @GetMapping("/search")
+    fun searchBoardByTitle(@RequestParam (name = "title") title: String): ResponseEntity<List<BoardResponse>>{
+        return ResponseEntity.status(HttpStatus.OK).body(boardService.searchBoardByTitle(title))
+    }
     @GetMapping
     fun getBoardList(): ResponseEntity<List<BoardResponse>>{
         return ResponseEntity.status(HttpStatus.OK).body(boardService.getBoardList())

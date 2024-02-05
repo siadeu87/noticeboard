@@ -17,8 +17,11 @@ class BoardServiceImpl(
     private val boardRepository: BoardRepository,
     private val userRepository: UserRepository
 ): BoardService {
-    override fun getBoardList(): List<BoardResponse> {
+    override fun searchBoardByTitle(title: String): List<BoardResponse> {
+        return boardRepository.searchBoardListByTitle(title).map { BoardResponse.to(it) }
+    }
 
+    override fun getBoardList(): List<BoardResponse> {
         return boardRepository.findAllByDeletedAtIsNull().map { BoardResponse.to(it) }
     }
 
