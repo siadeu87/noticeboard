@@ -13,7 +13,7 @@ class BoardRepositoryImpl: CustomBoardRepository, QueryDslSupport() {
     private val board = QBoard.board
     override fun searchBoardListByTitle(title: String): List<Board> {
         return queryFactory.selectFrom(board)
-            .where(board.title.containsIgnoreCase(title))
+            .where(board.title.containsIgnoreCase(title).and(board.deletedAt.isNull))
             .fetch()
     }
 
