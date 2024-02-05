@@ -5,6 +5,9 @@ import com.example.noticeboard.domain.board.dto.CreatedBoardRequest
 import com.example.noticeboard.domain.board.dto.UpdateBoardRequest
 import com.example.noticeboard.domain.board.service.BoardService
 import com.example.noticeboard.infra.security.UserPrincipal
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -20,8 +23,8 @@ class BoardController(
         return ResponseEntity.status(HttpStatus.OK).body(boardService.searchBoardByTitle(title))
     }
     @GetMapping
-    fun getBoardList(): ResponseEntity<List<BoardResponse>>{
-        return ResponseEntity.status(HttpStatus.OK).body(boardService.getBoardList())
+    fun getBoardList(@PageableDefault(size = 15, sort = ["id"]) pageable: Pageable): ResponseEntity<Page<BoardResponse>>{
+        return ResponseEntity.status(HttpStatus.OK).body(boardService.getPaginatedBoardList(pageable))
     }
     @GetMapping("/{boardId}")
     fun getBoard(@PathVariable boardId: Long): ResponseEntity<BoardResponse>{

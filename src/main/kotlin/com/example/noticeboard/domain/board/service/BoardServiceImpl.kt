@@ -8,6 +8,8 @@ import com.example.noticeboard.domain.board.repository.BoardRepository
 import com.example.noticeboard.domain.exception.ModelNotFoundException
 import com.example.noticeboard.domain.exception.UnauthorizedException
 import com.example.noticeboard.domain.user.repository.UserRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -21,9 +23,10 @@ class BoardServiceImpl(
         return boardRepository.searchBoardListByTitle(title).map { BoardResponse.to(it) }
     }
 
-    override fun getBoardList(): List<BoardResponse> {
-        return boardRepository.findAllByDeletedAtIsNull().map { BoardResponse.to(it) }
+    override fun getPaginatedBoardList(pageable: Pageable): Page<BoardResponse> {
+        return boardRepository.findByPageableAndDeletedAtIsNull(pageable).map { BoardResponse.to(it) }
     }
+
 
     override fun getBoard(boardId: Long): BoardResponse {
         val board = boardRepository.findByIdAndDeletedAtIsNull(boardId) ?: throw ModelNotFoundException("Board", boardId)
