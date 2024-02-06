@@ -21,7 +21,7 @@ class BoardServiceImpl(
     private val boardRepository: BoardRepository,
     private val userRepository: UserRepository
 ): BoardService {
-    override fun searchBoardByTitle(category: Category,searchType: BoardSearchType, keyword: String): List<BoardResponse> {
+    override fun searchBoardList(category: Category,searchType: BoardSearchType, keyword: String): List<BoardResponse> {
         return boardRepository.searchBoardList(category, searchType, keyword).map { BoardResponse.to(it) }
     }
 

@@ -9,7 +9,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
 interface BoardService {
-    fun searchBoardByTitle(category: Category, searchType: BoardSearchType, keyword: String): List<BoardResponse>
+    fun searchBoardList(category: Category, searchType: BoardSearchType, keyword: String): List<BoardResponse>
     fun getPaginatedBoardList(pageable: Pageable): Page<BoardResponse>
     fun getBoard(boardId: Long): BoardResponse
     fun createdBoard(userId: Long, request: CreatedBoardRequest): BoardResponse
