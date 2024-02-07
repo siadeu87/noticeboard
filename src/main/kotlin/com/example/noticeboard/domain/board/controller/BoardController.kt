@@ -3,7 +3,6 @@ package com.example.noticeboard.domain.board.controller
 import com.example.noticeboard.domain.board.dto.BoardResponse
 import com.example.noticeboard.domain.board.dto.CreatedBoardRequest
 import com.example.noticeboard.domain.board.dto.UpdateBoardRequest
-import com.example.noticeboard.domain.board.model.BoardSearchType
 import com.example.noticeboard.domain.board.model.Category
 import com.example.noticeboard.domain.board.service.BoardService
 import com.example.noticeboard.infra.security.UserPrincipal
@@ -23,10 +22,11 @@ class BoardController(
     @GetMapping("/search")
     fun searchBoardByList(
         @RequestParam (name = "category") category: Category,
-        @RequestParam (name = "searchType") searchType: BoardSearchType,
-        @RequestParam (name = "keyword") keyword: String
+        @RequestParam (name = "title") title: String?,
+        @RequestParam (name = "tag") tag: String?,
+        @RequestParam (name = "content") content: String?,
     ): ResponseEntity<List<BoardResponse>>{
-        return ResponseEntity.status(HttpStatus.OK).body(boardService.searchBoardList(category, searchType, keyword))
+        return ResponseEntity.status(HttpStatus.OK).body(boardService.searchBoardList(category, title, tag, content))
     }
     @GetMapping
     fun getBoardList(@PageableDefault(size = 15, sort = ["id"]) pageable: Pageable): ResponseEntity<Page<BoardResponse>>{

@@ -4,7 +4,6 @@ import com.example.noticeboard.domain.board.dto.BoardResponse
 import com.example.noticeboard.domain.board.dto.CreatedBoardRequest
 import com.example.noticeboard.domain.board.dto.UpdateBoardRequest
 import com.example.noticeboard.domain.board.model.Board
-import com.example.noticeboard.domain.board.model.BoardSearchType
 import com.example.noticeboard.domain.board.model.Category
 import com.example.noticeboard.domain.board.repository.BoardRepository
 import com.example.noticeboard.domain.exception.ModelNotFoundException
@@ -21,8 +20,8 @@ class BoardServiceImpl(
     private val boardRepository: BoardRepository,
     private val userRepository: UserRepository
 ): BoardService {
-    override fun searchBoardList(category: Category,searchType: BoardSearchType, keyword: String): List<BoardResponse> {
-        return boardRepository.searchBoardList(category, searchType, keyword).map { BoardResponse.to(it) }
+    override fun searchBoardList(category: Category, title: String?, tag: String?, content: String?): List<BoardResponse> {
+        return boardRepository.searchBoardList(category, title, tag, content).map { BoardResponse.to(it) }
     }
 
     override fun getPaginatedBoardList(pageable: Pageable): Page<BoardResponse> {
